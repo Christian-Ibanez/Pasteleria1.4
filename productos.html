@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Productos - Pastelería Mil Sabores</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#" style="font-family: 'Pacifico', cursive;">Pastelería Mil Sabores</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="carrito.html">Carrito</a></li>
+                    <li class="nav-item"><a class="nav-link" href="perfil.html">Perfil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="registro.html">Registro</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="container my-5">
+        <h2 class="text-center" style="font-family: 'Pacifico', cursive;">Catálogo de Productos</h2>
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <input type="text" id="searchInput" class="form-control" placeholder="Buscar productos...">
+            </div>
+            <div class="col-md-3">
+                <select id="filterType" class="form-select">
+                    <option value="">Todos</option>
+                    <option value="cuadradas">Tortas Cuadradas</option>
+                    <option value="circulares">Tortas Circulares</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-primary" onclick="filterProducts()">Filtrar</button>
+            </div>
+        </div>
+        <div class="row" id="productList"></div>
+    </section>
+
+    <footer class="text-center py-3 bg-light">
+        <p>&copy; 2025 Pastelería Mil Sabores. ¡Celebra la dulzura de la vida!</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;">
+        <div id="cartToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <i class="bi bi-cart-check me-2" style="color: #198754;"></i>
+                <strong class="me-auto">Producto agregado</strong>
+                <small>Ahora</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                <div class="d-flex align-items-center">
+                    <img id="toastProductImage" src="" alt="Producto" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;" class="me-3">
+                    <div>
+                        <h6 id="toastProductName" class="mb-1"></h6>
+                        <p id="toastProductPrice" class="mb-0 text-muted"></p>
+                    </div>
+                </div>
+                <div class="mt-2 pt-2 border-top">
+                    <a href="carrito.html" class="btn btn-sm btn-success">Ver carrito</a>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="toast">Seguir comprando</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

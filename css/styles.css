@@ -1,0 +1,64 @@
+body {
+    background-color: #FFF5E1; /* Crema Pastel */
+    font-family: 'Lato', sans-serif;
+    color: #5D4037; /* Marrón Oscuro */
+}
+
+h1, h2, h3 {
+    font-family: 'Pacifico', cursive;
+    color: #8B4513; /* Chocolate */
+}
+
+.navbar-brand {
+    font-family: 'Pacifico', cursive;
+    color: #FFC0CB; /* Rosa Suave */
+}
+
+.btn-primary {
+    background-color: #FFC0CB;
+    border-color: #FFC0CB;
+    color: #5D4037;
+}
+
+.btn-primary:hover {
+    background-color: #8B4513;
+    color: #FFF5E1;
+}
+
+.card {
+    background-color: #FFF;
+    border: 1px solid #B0BEC5; /* Gris Claro */
+}
+
+.secondary-text {
+    color: #B0BEC5;
+}
+
+.carousel-item img {
+    height: 200px; /* Imágenes más pequeñas */
+    object-fit: cover;
+}
+
+.carousel-caption {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #FFF5E1;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.carousel-item h6 {
+    font-size: 1rem;
+    margin: 5px 0;
+}
+
+.carousel-item p {
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+
+#sidebar-wrapper .list-group-item.active {
+    background-color: #ffc0cb; 
+    color: #444;
+    border-color: #ffc0cb;
+  }

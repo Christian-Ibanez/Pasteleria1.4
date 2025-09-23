@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <title>Login - Pasteleria Mil Sabores</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#" style="font-family: 'Pacifico', cursive;">Pastelería Mil Sabores</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="carrito.html">Carrito</a></li>
+                    <li class="nav-item"><a class="nav-link" href="perfil.html">Perfil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="registro.html">Registro</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="container my-5">
+        <h2 class="text-center" style="font-family: 'Pacifico', cursive;">Inicio de Sesión</h2>
+        <form id="loginForm">
+            <div class="mb-3">
+                <label for="email" class="form-label">Correo</label>
+                <input type="email" class="form-control" id="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Ingresar</button>
+        </form>
+    </section>
+
+    <div class="modal fade" id="loginErrorModal" tabindex="-1" aria-labelledby="loginErrorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginErrorModalLabel">Error de Inicio de Sesión</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="mb-3">
+                        <i class="bi bi-person-x" style="font-size: 3rem; color: #dc3545;"></i>
+                    </div>
+                    <h4>Credenciales incorrectas.</h4>
+                    <p>El correo electrónico o la contraseña que ingresaste no son válidos. Por favor, intenta de nuevo.</p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Intentar de nuevo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center py-3 bg-light">
+        <p>&copy; 2025 Pastelería Mil Sabores. ¡Celebra la dulzura de la vida!</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Credenciales de administrador
+            if (email === 'admin@admin.cl' && password === 'admin') {
+                window.location.href = 'admin.html';
+                return; 
+            }
+
+            // Verificar credenciales de usuario normal
+            const storedUser = JSON.parse(localStorage.getItem('user'));
+            
+            if (storedUser && storedUser.email === email) {
+                // Manejar usuarios antiguos sin contraseña
+                if (!storedUser.password) {
+                    // Si es usuario antiguo, establecer contraseña por defecto
+                    storedUser.password = '123456';
+                    localStorage.setItem('user', JSON.stringify(storedUser));
+                }
+                
+                // Verificar contraseña
+                if (storedUser.password === password) {
+                    window.location.href = 'perfil.html';
+                } else {
+                    showLoginError();
+                }
+            } else {
+                showLoginError();
+            }
+        });
+
+        function showLoginError() {
+            const loginErrorModal = new bootstrap.Modal(document.getElementById('loginErrorModal'));
+            loginErrorModal.show();
+        }
+    </script>
+</body>
+</html>

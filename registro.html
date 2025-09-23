@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <title>Registro - Pasteleria Mil Sabores</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#" style="font-family: 'Pacifico', cursive;">Pastelería Mil Sabores</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="carrito.html">Carrito</a></li>
+                    <li class="nav-item"><a class="nav-link" href="perfil.html">Perfil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="registro.html">Registro</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="container my-5">
+        <h2 class="text-center" style="font-family: 'Pacifico', cursive;">Registro de Usuario</h2>
+        <form id="registerForm">
+            <div class="mb-3">
+                <label for="name" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="name" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Correo</label>
+                <input type="email" class="form-control" id="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="birthdate" class="form-label">Fecha de Nacimiento</label>
+                <input type="date" class="form-control" id="birthdate" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="password" required>
+            </div>
+            <div class="mb-3">
+                <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
+                <input type="password" class="form-control" id="confirmPassword" required>
+            </div>
+            <div class="mb-3">
+                <label for="code" class="form-label">Código Promocional (opcional)</label>
+                <input type="text" class="form-control" id="code">
+            </div>
+            <button type="submit" class="btn btn-primary">Registrarse</button>
+        </form>
+    </section>
+    
+    <div class="modal fade" id="passwordErrorModal" tabindex="-1" aria-labelledby="passwordErrorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="passwordErrorModalLabel">Error de Registro</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="mb-3">
+                        <i class="bi bi-x-circle" style="font-size: 3rem; color: #dc3545;"></i>
+                    </div>
+                    <h4>Las contraseñas no coinciden.</h4>
+                    <p>Por favor, asegúrate de que ambos campos de contraseña sean iguales.</p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Intentar de nuevo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center py-3 bg-light">
+        <p>&copy; 2025 Pastelería Mil Sabores. ¡Celebra la dulzura de la vida!</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const birthdate = document.getElementById('birthdate').value;
+            const code = document.getElementById('code').value;
+            
+            // Calcular edad
+            const birthDate = new Date(birthdate);
+            const ageDiffMs = Date.now() - birthDate.getTime();
+            const ageDate = new Date(ageDiffMs);
+            const age = Math.abs(ageDate.getUTCFullYear() - 1970);
+
+            let discounts = [];
+            if (age > 50) discounts.push('50% de descuento en todos los productos');
+            if (code === 'FELICES50') discounts.push('10% de descuento permanente');
+            if (email.endsWith('@duoc.cl')) {
+                discounts.push('Torta gratis en tu cumpleaños');
+            }
+
+            // Crear usuario con contraseña por defecto (puede ser el email o una fija)
+            const user = {
+                name,
+                email,
+                birthdate,
+                discounts,
+                age,
+                password: "123456",
+                registrationDate: new Date().toISOString()
+            };
+            
+            localStorage.setItem('user', JSON.stringify(user));
+            
+            // Inicializar array de pedidos para este usuario
+            const userOrders = JSON.parse(localStorage.getItem('userOrders')) || {};
+            if (!userOrders[email]) {
+                userOrders[email] = [];
+                localStorage.setItem('userOrders', JSON.stringify(userOrders));
+            }
+            
+            // Mostrar modal de éxito
+            showRegisterSuccess(name, email, discounts);
+        });
+    </script>
+</body>
+</html>
