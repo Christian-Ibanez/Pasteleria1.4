@@ -69,61 +69,61 @@
         ];
 
         function loadCart() {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const user = JSON.parse(localStorage.getItem('user')) || {};
-    let total = 0;
-    const cartItems = document.getElementById('cartItems');
-    cartItems.innerHTML = '';
-    
-    if (cart.length === 0) {
-        cartItems.innerHTML = `
-            <div class="empty-cart">
-                <i class="bi bi-cart-x" style="font-size: 3rem;"></i>
-                <h4>Tu carrito está vacío</h4>
-                <p>Agrega productos deliciosos desde nuestro catálogo</p>
-                <a href="productos.html" class="btn btn-primary">Ver Productos</a>
-            </div>
-        `;
-        document.getElementById('total').textContent = `Total: $0 CLP`;
-        return;
-    }
-    
-    cart.forEach((item, index) => {
-        let price = item.price;
-        // Aplicar descuentos
-        if (user.discounts && user.discounts.includes('50% de descuento en todos los productos')) price *= 0.5;
-        if (user.discounts && user.discounts.includes('10% de descuento permanente')) price *= 0.9;
-        total += price;
-        
-        const row = `
-            <div class="col-12 mb-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <div class="d-flex align-items-center">
-                                <class="cart-item-image me-3" alt="${item.name}">
-                                <div>
-                                    <h5 class="card-title mb-1">${item.name}</h5>
-                                    <p class="card-text mb-0">$${price.toLocaleString('es-CL')} CLP</p>
-                                    ${user.discounts && user.discounts.length > 0 ? '<span class="badge bg-success">Descuento aplicado</span>' : ''}
-                                </div>
-                            </div>
-                            <button class="btn btn-danger btn-sm" onclick="removeFromCart(${index})">Eliminar</button>
-                        </div>
-                        ${item.customMessage ? `
-                            <div class="mt-2 p-2 bg-light rounded">
-                                <small class="text-muted">Mensaje personalizado:</small>
-                                <p class="mb-0 fw-bold">"${item.customMessage}"</p>
-                            </div>
-                        ` : ''}
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const user = JSON.parse(localStorage.getItem('user')) || {};
+            let total = 0;
+            const cartItems = document.getElementById('cartItems');
+            cartItems.innerHTML = '';
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="empty-cart">
+                        <i class="bi bi-cart-x" style="font-size: 3rem;"></i>
+                        <h4>Tu carrito está vacío</h4>
+                        <p>Agrega productos deliciosos desde nuestro catálogo</p>
+                        <a href="productos.html" class="btn btn-primary">Ver Productos</a>
                     </div>
-                </div>
-            </div>
-        `;
-        cartItems.innerHTML += row;
-    });
-    document.getElementById('total').textContent = `Total: $${total.toLocaleString('es-CL')} CLP`;
-}
+                `;
+                document.getElementById('total').textContent = `Total: $0 CLP`;
+                return;
+            }
+            
+            cart.forEach((item, index) => {
+                let price = item.price;
+                // Aplicar descuentos
+                if (user.discounts && user.discounts.includes('50% de descuento en todos los productos')) price *= 0.5;
+                if (user.discounts && user.discounts.includes('10% de descuento permanente')) price *= 0.9;
+                total += price;
+                
+                const row = `
+                    <div class="col-12 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div class="d-flex align-items-center">
+                                        <class="cart-item-image me-3" alt="${item.name}">
+                                        <div>
+                                            <h5 class="card-title mb-1">${item.name}</h5>
+                                            <p class="card-text mb-0">$${price.toLocaleString('es-CL')} CLP</p>
+                                            ${user.discounts && user.discounts.length > 0 ? '<span class="badge bg-success">Descuento aplicado</span>' : ''}
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-danger btn-sm" onclick="removeFromCart(${index})">Eliminar</button>
+                                </div>
+                                ${item.customMessage ? `
+                                    <div class="mt-2 p-2 bg-light rounded">
+                                        <small class="text-muted">Mensaje personalizado:</small>
+                                        <p class="mb-0 fw-bold">"${item.customMessage}"</p>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                cartItems.innerHTML += row;
+            });
+            document.getElementById('total').textContent = `Total: $${total.toLocaleString('es-CL')} CLP`;
+        }
 
         function removeFromCart(index) {
             let cart = JSON.parse(localStorage.getItem('cart'));
@@ -132,73 +132,216 @@
             loadCart();
         }
 
+        let selectedAddress = null;
+
         function checkout() {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const user = JSON.parse(localStorage.getItem('user')) || {};
-    
-    if (cart.length === 0) {
-        const emptyCartModal = new bootstrap.Modal(document.getElementById('emptyCartModal'));
-        emptyCartModal.show();
-        return;
-    }
-    
-    if (!user.email) {
-        const loginRequiredModal = new bootstrap.Modal(document.getElementById('loginRequiredModal'));
-        loginRequiredModal.show();
-        return;
-    }
-    
-    // Calcular total con descuentos
-    let total = 0;
-    cart.forEach(item => {
-        let price = item.price;
-        if (user.discounts && user.discounts.includes('50% de descuento en todos los productos')) price *= 0.5;
-        if (user.discounts && user.discounts.includes('10% de descuento permanente')) price *= 0.9;
-        total += price;
-    });
-    
-    // Crear objeto de pedido con mensajes personalizados
-    const order = {
-        id: Date.now(),
-        date: new Date().toLocaleDateString('es-CL', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        }),
-        items: [...cart], // Incluye los mensajes personalizados
-        total: total,
-        status: 'Confirmado',
-        userEmail: user.email
-    };
-    
-    // Guardar pedido en el historial
-    const userOrders = JSON.parse(localStorage.getItem('userOrders')) || {};
-    if (!userOrders[user.email]) {
-        userOrders[user.email] = [];
-    }
-    userOrders[user.email].unshift(order);
-    localStorage.setItem('userOrders', JSON.stringify(userOrders));
-    
-    // Limpiar carrito
-    localStorage.removeItem('cart');
-    
-    // Mostrar modal de confirmación
-    document.getElementById('orderNumber').textContent = '#' + order.id;
-    document.getElementById('orderTotal').textContent = '$' + total.toLocaleString('es-CL') + ' CLP';
-    const modal = new bootstrap.Modal(document.getElementById('confirmationModal'));
-    modal.show();
-    
-    // Actualizar carrito
-    loadCart();
-}
-        function redirectToProfile() {
-            window.location.href = 'perfil.html';
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const user = JSON.parse(localStorage.getItem('user')) || {};
+            
+            if (cart.length === 0) {
+                const emptyCartModal = new bootstrap.Modal(document.getElementById('emptyCartModal'));
+                emptyCartModal.show();
+                return;
+            }
+            
+            if (!user.email) {
+                const loginRequiredModal = new bootstrap.Modal(document.getElementById('loginRequiredModal'));
+                loginRequiredModal.show();
+                return;
+            }
+            
+            // Verificar si el usuario tiene direcciones
+            const addresses = getUserAddresses();
+            
+            if (addresses.length === 0) {
+                // No hay direcciones, mostrar modal para agregar una
+                const addressRequiredModal = new bootstrap.Modal(document.getElementById('addressRequiredModal'));
+                addressRequiredModal.show();
+            } else if (addresses.length === 1) {
+                // Solo tiene una dirección, usarla automáticamente
+                selectedAddress = addresses[0];
+                processOrderWithAddress();
+            } else {
+                // Tiene múltiples direcciones, mostrar selector
+                selectedAddress = null;
+                showAddressSelectionModal(addresses);
+            }
         }
+
+        // Obtener direcciones del usuario
+        function getUserAddresses() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            return user && user.addresses ? user.addresses : [];
+        }
+
+        function showAddressSelectionModal(addresses) {
+            const addressSelectionList = document.getElementById('addressSelectionList');
+            addressSelectionList.innerHTML = '';
+            
+            addresses.forEach((address, index) => {
+                const addressCard = `
+                    <div class="card mb-2 address-option ${address.isDefault ? 'border-primary' : ''}" 
+                        onclick="selectAddress(${index})" style="cursor: pointer;">
+                        <div class="card-body">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="addressRadio" 
+                                    id="addressRadio${index}" ${address.isDefault ? 'checked' : ''}>
+                                <label class="form-check-label w-100" for="addressRadio${index}">
+                                    <strong>${address.name}</strong>
+                                    ${address.isDefault ? '<span class="badge bg-primary ms-2">Principal</span>' : ''}
+                                    <br>
+                                    <small class="text-muted">
+                                        <i class="bi bi-geo-alt"></i> ${address.street}, ${address.city}<br>
+                                        <i class="bi bi-telephone"></i> ${address.phone}
+                                    </small>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                addressSelectionList.innerHTML += addressCard;
+            });
+            
+            // Establecer la dirección principal como seleccionada por defecto
+            const defaultAddressIndex = addresses.findIndex(addr => addr.isDefault);
+            if (defaultAddressIndex >= 0) {
+                selectedAddress = addresses[defaultAddressIndex];
+            }
+            
+            const selectAddressModal = new bootstrap.Modal(document.getElementById('selectAddressModal'));
+            selectAddressModal.show();
+        }
+
+        function selectAddress(index) {
+            const addresses = getUserAddresses();
+            selectedAddress = addresses[index];
+            
+            // Actualizar el radio button visualmente
+            document.querySelectorAll('.address-option').forEach((card, i) => {
+                const radio = card.querySelector('input[type="radio"]');
+                radio.checked = (i === index);
+            });
+        }
+
+        function confirmOrderWithSelectedAddress() {
+            if (!selectedAddress) {
+                alert('Por favor, selecciona una dirección de envío.');
+                return;
+            }
+            processOrderWithAddress();
+        }
+
+        // Procesar el pedido con la dirección
+        function processOrderWithAddress() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const user = JSON.parse(localStorage.getItem('user')) || {};
+            
+            // Calcular total con descuentos
+            let total = 0;
+            cart.forEach(item => {
+                let price = item.price;
+                if (user.discounts && user.discounts.includes('50% de descuento en todos los productos')) price *= 0.5;
+                if (user.discounts && user.discounts.includes('10% de descuento permanente')) price *= 0.9;
+                total += price;
+            });
+            
+            // Crear objeto de pedido con dirección
+            const order = {
+                id: Date.now(),
+                date: new Date().toLocaleDateString('es-CL', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }),
+                items: [...cart],
+                total: total,
+                status: 'Confirmado',
+                userEmail: user.email,
+                shippingAddress: { ...selectedAddress } // Guardar copia de la dirección
+            };
+            
+            // Guardar pedido en el historial
+            const userOrders = JSON.parse(localStorage.getItem('userOrders')) || {};
+            if (!userOrders[user.email]) {
+                userOrders[user.email] = [];
+            }
+            userOrders[user.email].unshift(order);
+            localStorage.setItem('userOrders', JSON.stringify(userOrders));
+            
+            // Limpiar carrito
+            localStorage.removeItem('cart');
+            
+            // Mostrar modal de confirmación con detalles de envío
+            showOrderConfirmation(order);
+            
+            // Actualizar carrito
+            loadCart();
+        }
+
+        // Mostrar confirmación de pedido con dirección
+        function showOrderConfirmation(order) {
+            document.getElementById('orderNumber').textContent = '#' + order.id;
+            document.getElementById('orderTotal').textContent = '$' + order.total.toLocaleString('es-CL') + ' CLP';
+            
+            // Agregar información de envío al modal de confirmación
+            const confirmationModal = document.getElementById('confirmationModal');
+            const existingShippingInfo = confirmationModal.querySelector('.shipping-info');
+            if (existingShippingInfo) {
+                existingShippingInfo.remove();
+            }
+            
+            const shippingInfo = document.createElement('div');
+            shippingInfo.className = 'shipping-info mt-3 p-3 bg-light rounded';
+            shippingInfo.innerHTML = `
+                <h6>Dirección de envío:</h6>
+                <p class="mb-1"><strong>${order.shippingAddress.name}</strong></p>
+                <p class="mb-1">${order.shippingAddress.street}, ${order.shippingAddress.city}</p>
+                <p class="mb-1">${order.shippingAddress.region} ${order.shippingAddress.zipCode ? `- ${order.shippingAddress.zipCode}` : ''}</p>
+                <p class="mb-0">Tel: ${order.shippingAddress.phone}</p>
+                ${order.shippingAddress.instructions ? `
+                    <p class="mb-0 mt-2"><small><strong>Instrucciones:</strong> ${order.shippingAddress.instructions}</small></p>
+                ` : ''}
+            `;
+            
+            const modalBody = confirmationModal.querySelector('.modal-body');
+            modalBody.appendChild(shippingInfo);
+            
+            const modal = new bootstrap.Modal(confirmationModal);
+            modal.show();
+        }
+
+        // Redirigir al perfil para agregar dirección
+        function goToProfileToAddAddress() {
+            // Cerrar modales abiertos
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                const bsModal = bootstrap.Modal.getInstance(modal);
+                if (bsModal) bsModal.hide();
+            });
+            
+            // Redirigir al perfil después de un breve delay
+            setTimeout(() => {
+                window.location.href = 'perfil.html';
+            }, 500);
+        }
+
+        // Función para redirigir al perfil (existente)
+        function redirectToProfile() {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('confirmationModal'));
+            if (modal) {
+                modal.hide();
+            }
+            setTimeout(() => {
+                window.location.href = 'perfil.html';
+            }, 300);
+        }
+
         function redirectToRegister() {
         window.location.href = 'registro.html';
         }
+
         function goToProfile() {
             window.location.href = 'perfil.html';
         }
@@ -207,47 +350,91 @@
 
         document.addEventListener('DOMContentLoaded', loadCart);
     </script>
-    <div class="modal fade" id="emptyCartModal" tabindex="-1" aria-hidden="true">
+        <div class="modal fade" id="emptyCartModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Carrito vacío</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                        <div class="modal-body text-center">
+                            <div class="mb-3">
+                                <i class="bi bi-cart-x" style="font-size: 3rem; color: #6c757d;"></i>
+                            </div>
+                            <h4>Tu carrito está vacío</h4>
+                            <p>Agrega productos deliciosos desde nuestro catálogo antes de confirmar el pedido.</p>
+                        </div>
+                        <div class="modal-footer justify-content-center">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Seguir viendo</button>
+                            <a href="productos.html" class="btn btn-primary">Ver productos</a>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="loginRequiredModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Carrito vacío</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
+                    <div class="modal-header">
+                        <h5 class="modal-title">Inicio de sesión requerido</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
                     <div class="modal-body text-center">
                         <div class="mb-3">
-                            <i class="bi bi-cart-x" style="font-size: 3rem; color: #6c757d;"></i>
+                            <i class="bi bi-person-x" style="font-size: 3rem; color: #dc3545;"></i>
                         </div>
-                        <h4>Tu carrito está vacío</h4>
-                        <p>Agrega productos deliciosos desde nuestro catálogo antes de confirmar el pedido.</p>
+                        <h4>Debes iniciar sesión</h4>
+                        <p>Para realizar un pedido necesitas tener una cuenta. Serás redirigido al registro.</p>
                     </div>
                     <div class="modal-footer justify-content-center">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Seguir viendo</button>
-                        <a href="productos.html" class="btn btn-primary">Ver productos</a>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" onclick="redirectToRegister()">Ir al registro</button>
                     </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="loginRequiredModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Inicio de sesión requerido</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-center">
-                    <div class="mb-3">
-                        <i class="bi bi-person-x" style="font-size: 3rem; color: #dc3545;"></i>
-                    </div>
-                    <h4>Debes iniciar sesión</h4>
-                    <p>Para realizar un pedido necesitas tener una cuenta. Serás redirigido al registro.</p>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="redirectToRegister()">Ir al registro</button>
                 </div>
             </div>
         </div>
-    </div>
+        <div class="modal fade" id="addressRequiredModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Dirección de Envío Requerida</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-geo-alt" style="font-size: 3rem; color: #dc3545;"></i>
+                        </div>
+                        <h4>Necesitas una dirección de envío</h4>
+                        <p>Para confirmar tu pedido, primero debes agregar una dirección de envío en tu perfil.</p>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" onclick="goToProfileToAddAddress()">Agregar Dirección</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="selectAddressModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Seleccionar Dirección de Envío</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="addressSelectionList">
+                        </div>
+                        <div class="text-center mt-3">
+                            <button type="button" class="btn btn-outline-primary" onclick="goToProfileToAddAddress()">
+                                <i class="bi bi-plus-circle"></i> Agregar Nueva Dirección
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" onclick="confirmOrderWithSelectedAddress()">Confirmar Pedido</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 </body>
 </html>

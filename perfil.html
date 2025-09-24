@@ -30,43 +30,121 @@
     <section class="container my-5">
         <h2 class="text-center" style="font-family: 'Pacifico', cursive;">Mi Perfil</h2>
         
-        <div class="row">
-            <div class="col-md-6">
-                <div class="profile-card bg-light">
-                    <h4>Información Personal</h4>
-                <div id="userInfo">
-                <p>No hay información de usuario. <a href="registro.html">Regístrate aquí</a></p>
-            </div>
-            <button class="btn btn-secondary mt-3" id="editProfileBtn" style="display: none;" onclick="toggleEditMode()">Editar Perfil</button>
+        <div class="col-md-6">
+    <div class="profile-card bg-light">
+        <h4>Información Personal</h4>
+        <div id="userInfo">
+            <p>No hay información de usuario. <a href="registro.html">Regístrate aquí</a></p>
         </div>
+        <button class="btn btn-secondary mt-3" id="editProfileBtn" style="display: none;" onclick="toggleEditMode()">Editar Perfil</button>
+    </div>
 
-                <div class="profile-card bg-light mt-4" style="display:none;" id="editProfileForm">
-                    <h4>Editar Perfil</h4>
-                    <form id="profileForm">
-                        <div class="mb-3">
-                            <label for="profileName" class="form-label">Nombre</label>
-                            <input type="text" class="form-control" id="profileName" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="profileEmail" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="profileEmail" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="profilePassword" class="form-label">Nueva Contraseña</label>
-                            <input type="password" class="form-control" id="profilePassword" placeholder="Dejar en blanco para no cambiar">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                        <button type="button" class="btn btn-link" onclick="toggleEditMode()">Cancelar</button>
-                    </form>
-                </div>
-                
-                <div class="profile-card bg-light mt-4">
-                    <h4>Descuentos Activos</h4>
-                    <div id="userDiscounts">
-                        <p>No tienes descuentos disponibles.</p>
+    <div class="profile-card bg-light mt-4" style="display:none;" id="editProfileForm">
+        <h4>Editar Perfil</h4>
+        <form id="profileForm">
+            <div class="mb-3">
+                <label for="profileName" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="profileName" required>
+            </div>
+            <div class="mb-3">
+                <label for="profileEmail" class="form-label">Email</label>
+                <input type="email" class="form-control" id="profileEmail" required>
+            </div>
+            <div class="mb-3">
+                <label for="profilePassword" class="form-label">Nueva Contraseña</label>
+                <input type="password" class="form-control" id="profilePassword" placeholder="Dejar en blanco para no cambiar">
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            <button type="button" class="btn btn-link" onclick="toggleEditMode()">Cancelar</button>
+        </form>
+    </div>
+    
+    <div class="profile-card bg-light mt-4">
+        <h4>Descuentos Activos</h4>
+        <div id="userDiscounts">
+            <p>No tienes descuentos disponibles.</p>
+        </div>
+    </div>
+
+    <!-- NUEVA SECCIÓN: Direcciones de Envío -->
+    <div class="profile-card bg-light mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="mb-0">Direcciones de Envío</h4>
+            <button class="btn btn-primary btn-sm" id="addAddressBtn" style="display: none;" onclick="showAddressForm()">
+                <i class="bi bi-plus-circle"></i> Agregar Dirección
+            </button>
+        </div>
+        <div id="addressesList">
+            <p>Inicia sesión para gestionar tus direcciones.</p>
+        </div>
+    </div>
+
+    <!-- Formulario para agregar/editar dirección -->
+    <div class="profile-card bg-light mt-4" style="display:none;" id="addressForm">
+        <h4 id="addressFormTitle">Agregar Nueva Dirección</h4>
+        <form id="addressFormElement">
+            <input type="hidden" id="editAddressIndex" value="-1">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="addressName" class="form-label">Nombre de la dirección</label>
+                        <input type="text" class="form-control" id="addressName" placeholder="Ej: Casa, Trabajo" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="addressPhone" class="form-label">Teléfono de contacto</label>
+                        <input type="tel" class="form-control" id="addressPhone" placeholder="+56 9 1234 5678" required>
                     </div>
                 </div>
-            </div>
+                <div class="mb-3">
+                    <label for="addressStreet" class="form-label">Dirección (Calle y número)</label>
+                    <input type="text" class="form-control" id="addressStreet" placeholder="Av. Principal #123" required>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="addressCity" class="form-label">Ciudad</label>
+                        <input type="text" class="form-control" id="addressCity" placeholder="Santiago" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="addressRegion" class="form-label">Región</label>
+                        <select class="form-select" id="addressRegion" required>
+                            <option value="">Seleccionar región</option>
+                            <option value="Arica y Parinacota">Arica y Parinacota</option>
+                            <option value="Tarapacá">Tarapacá</option>
+                            <option value="Antofagasta">Antofagasta</option>
+                            <option value="Atacama">Atacama</option>
+                            <option value="Coquimbo">Coquimbo</option>
+                            <option value="Valparaíso">Valparaíso</option>
+                            <option value="Metropolitana">Metropolitana</option>
+                            <option value="O'Higgins">O'Higgins</option>
+                            <option value="Maule">Maule</option>
+                            <option value="Ñuble">Ñuble</option>
+                            <option value="Biobío">Biobío</option>
+                            <option value="Araucanía">Araucanía</option>
+                            <option value="Los Ríos">Los Ríos</option>
+                            <option value="Los Lagos">Los Lagos</option>
+                            <option value="Aysén">Aysén</option>
+                            <option value="Magallanes">Magallanes</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="addressZip" class="form-label">Código Postal</label>
+                        <input type="text" class="form-control" id="addressZip" placeholder="1234567">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="addressInstructions" class="form-label">Instrucciones de entrega (opcional)</label>
+                    <textarea class="form-control" id="addressInstructions" rows="2" placeholder="Ej: Timbre 2 veces, departamento 4B"></textarea>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="addressDefault">
+                    <label class="form-check-label" for="addressDefault">
+                        Establecer como dirección principal
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar Dirección</button>
+                <button type="button" class="btn btn-link" onclick="hideAddressForm()">Cancelar</button>
+            </form>
+        </div>
+    </div>
             
             <div class="col-md-6">
                 <div class="profile-card bg-light">
@@ -145,198 +223,506 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
     <script>
-    // Función para cargar información del usuario
-    function loadUserProfile() {
-        const user = JSON.parse(localStorage.getItem('user'));
-        console.log('Usuario en perfil:', user); // Para debug
-        
-        const userInfo = document.getElementById('userInfo');
-        const userDiscounts = document.getElementById('userDiscounts');
-        const editProfileBtn = document.getElementById('editProfileBtn');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const editProfileForm = document.getElementById('editProfileForm');
-    
-    if (user) {
-        // Mostrar información del usuario
-        console.log('Usuario logueado:');
-        userInfo.innerHTML = `
-            <p><strong>Nombre:</strong> ${user.name}</p>
-            <p><strong>Email:</strong> ${user.email}</p>
-            ${user.birthdate ? `<p><strong>Fecha de nacimiento:</strong> ${new Date(user.birthdate).toLocaleDateString('es-CL')}</p>` : ''}
-        `;
-        
-        // Mostrar botón de editar perfil
-        editProfileBtn.style.display = 'block';
-        
-        // Asegurar que el formulario de edición esté oculto inicialmente
-        editProfileForm.style.display = 'none';
-        
-        // Mostrar botón de cerrar sesión
-        if (logoutBtn) logoutBtn.style.display = 'block';
-        
-        // Mostrar descuentos si existen
-        if (user.discounts && user.discounts.length > 0) {
-            userDiscounts.innerHTML = '';
-            user.discounts.forEach(discount => {
-                userDiscounts.innerHTML += `<span class="badge bg-success me-1 mb-1">${discount}</span>`;
-            });
-        } else {
-            userDiscounts.innerHTML = '<p>No tienes descuentos disponibles.</p>';
+        // Función para cargar información del usuario
+        function loadUserProfile() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            const userInfo = document.getElementById('userInfo');
+            const userDiscounts = document.getElementById('userDiscounts');
+            const editProfileBtn = document.getElementById('editProfileBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const addAddressBtn = document.getElementById('addAddressBtn');
+            const editProfileForm = document.getElementById('editProfileForm');
+            const addressForm = document.getElementById('addressForm');
+            
+            if (user) {
+                // MOSTRAR elementos cuando hay usuario logueado
+                userInfo.innerHTML = `
+                    <p><strong>Nombre:</strong> ${user.name}</p>
+                    <p><strong>Email:</strong> ${user.email}</p>
+                    ${user.birthdate ? `<p><strong>Fecha de nacimiento:</strong> ${new Date(user.birthdate).toLocaleDateString('es-CL')}</p>` : ''}
+                `;
+                
+                // Mostrar botones
+                editProfileBtn.style.display = 'block';
+                logoutBtn.style.display = 'block';
+                addAddressBtn.style.display = 'block';
+                
+                // Ocultar formularios
+                editProfileForm.style.display = 'none';
+                addressForm.style.display = 'none';
+                
+                // Mostrar descuentos
+                if (user.discounts && user.discounts.length > 0) {
+                    userDiscounts.innerHTML = '';
+                    user.discounts.forEach(discount => {
+                        userDiscounts.innerHTML += `<span class="badge bg-success me-1 mb-1">${discount}</span>`;
+                    });
+                } else {
+                    userDiscounts.innerHTML = '<p>No tienes descuentos disponibles.</p>';
+                }
+                
+                // Cargar direcciones y historial
+                loadAddresses();
+                loadOrderHistory();
+            } else {
+                // OCULTAR elementos cuando NO hay usuario logueado
+                userInfo.innerHTML = '<p>No hay información de usuario. <a href="registro.html">Regístrate aquí</a> o <a href="login.html">inicia sesión</a></p>';
+                userDiscounts.innerHTML = '<p>Inicia sesión para ver tus descuentos.</p>';
+                
+                // Ocultar botones
+                editProfileBtn.style.display = 'none';
+                logoutBtn.style.display = 'none';
+                addAddressBtn.style.display = 'none';
+                
+                // Ocultar formularios
+                editProfileForm.style.display = 'none';
+                addressForm.style.display = 'none';
+                
+                // Mostrar mensajes
+                document.getElementById('addressesList').innerHTML = '<p>Inicia sesión para gestionar tus direcciones.</p>';
+                document.getElementById('orderHistory').innerHTML = '<p class="text-center">Inicia sesión para ver tu historial de pedidos.</p>';
+            }
         }
         
-        // Cargar historial de pedidos
-        loadOrderHistory();
-    } else {
-        // No hay usuario logueado
-        console.log('No hay usuario logueado')
-        userInfo.innerHTML = '<p>No hay información de usuario. <a href="registro.html">Regístrate aquí</a> o <a href="login.html">inicia sesión</a></p>';
-        userDiscounts.innerHTML = '<p>No tienes descuentos disponibles.</p>';
-        
-        // Ocultar botón de editar perfil
-        editProfileBtn.style.display = 'none';
-        
-        // Ocultar formulario de edición
-        editProfileForm.style.display = 'none';
-        
-        // Ocultar botón de cerrar sesión
-        if (logoutBtn) logoutBtn.style.display = 'none';
-        
-        // Mostrar mensaje en historial de pedidos
-        document.getElementById('orderHistory').innerHTML = '<p>Inicia sesión para ver tu historial de pedidos.</p>';
-    }
-}
-    
-    // Función para cargar historial de pedidos
-    // Función para cargar historial de pedidos
-function loadOrderHistory() {
-    const orderHistory = document.getElementById('orderHistory');
-    const user = JSON.parse(localStorage.getItem('user'));
-    const userOrders = JSON.parse(localStorage.getItem('userOrders')) || {};
-    
-    const orders = user && user.email ? userOrders[user.email] || [] : [];
-    
-    if (orders.length > 0) {
-        orderHistory.innerHTML = '';
-        orders.forEach(order => {
-            let orderHTML = `
-                <div class="card mb-3">
-                    <div class="card-header">
-                        <h5>Pedido #${order.id}</h5>
-                        <p class="mb-0"><strong>Fecha:</strong> ${order.date}</p>
-                    </div>
-                    <div class="card-body">
-                        <h6>Productos:</h6>
-            `;
+        // Función para cargar historial de pedidos
+        function loadOrderHistory() {
+            const orderHistory = document.getElementById('orderHistory');
+            const user = JSON.parse(localStorage.getItem('user'));
+            const userOrders = JSON.parse(localStorage.getItem('userOrders')) || {};
             
-            order.items.forEach(item => {
-                orderHTML += `
-                    <div class="border-bottom pb-2 mb-2">
-                        <div class="d-flex justify-content-between">
-                            <span><strong>${item.name}</strong></span>
-                            <span>$${item.price.toLocaleString('es-CL')} CLP</span>
-                        </div>
-                        ${item.customMessage ? `
-                            <div class="mt-1">
-                                <small class="text-muted">Mensaje:</small>
-                                <p class="mb-0 fst-italic">"${item.customMessage}"</p>
+            const orders = user && user.email ? userOrders[user.email] || [] : [];
+            
+            if (orders.length > 0) {
+                orderHistory.innerHTML = '';
+                orders.forEach(order => {
+                    let orderHTML = `
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <h5>Pedido #${order.id}</h5>
+                                <p class="mb-0"><strong>Fecha:</strong> ${order.date}</p>
                             </div>
-                        ` : ''}
+                            <div class="card-body">
+                                <h6>Productos:</h6>
+                    `;
+                    
+                    order.items.forEach(item => {
+                        orderHTML += `
+                            <div class="border-bottom pb-2 mb-2">
+                                <div class="d-flex justify-content-between">
+                                    <span><strong>${item.name}</strong></span>
+                                    <span>$${item.price.toLocaleString('es-CL')} CLP</span>
+                                </div>
+                                ${item.customMessage ? `
+                                    <div class="mt-1">
+                                        <small class="text-muted">Mensaje:</small>
+                                        <p class="mb-0 fst-italic">"${item.customMessage}"</p>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        `;
+                    });
+                    
+                    // Agregar información de envío si existe
+                    if (order.shippingAddress) {
+                        orderHTML += `
+                            <div class="mt-3 p-2 bg-light rounded">
+                                <h6 class="mb-2">📦 Dirección de envío:</h6>
+                                <p class="mb-1"><strong>${order.shippingAddress.name}</strong></p>
+                                <p class="mb-1">${order.shippingAddress.street}, ${order.shippingAddress.city}</p>
+                                <p class="mb-1">${order.shippingAddress.phone}</p>
+                            </div>
+                        `;
+                    }
+                    
+                    orderHTML += `
+                                <div class="mt-3 pt-2 border-top">
+                                    <div class="d-flex justify-content-between">
+                                        <strong>Total:</strong>
+                                        <strong>$${order.total.toLocaleString('es-CL')} CLP</strong>
+                                    </div>
+                                </div>
+                                <div class="mt-2">
+                                    <span class="badge bg-success">${order.status}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    orderHistory.innerHTML += orderHTML;
+                });
+            } else if (user) {
+                orderHistory.innerHTML = '<p class="text-center">No hay pedidos recientes.</p>';
+            }
+        }
+        
+        // Funciones de logout
+        function logout() {
+            const logoutModal = new bootstrap.Modal(document.getElementById('logoutModal'));
+            logoutModal.show();
+        }
+        
+        function confirmLogout() {
+            localStorage.removeItem('user');
+            const logoutModal = bootstrap.Modal.getInstance(document.getElementById('logoutModal'));
+            logoutModal.hide();
+            
+            setTimeout(() => {
+                const logoutSuccessModal = new bootstrap.Modal(document.getElementById('logoutSuccessModal'));
+                logoutSuccessModal.show();
+            }, 300);
+        }
+        
+        function redirectToHome() {
+            window.location.href = 'index.html';
+        }
+        
+        // Función para editar perfil
+        function toggleEditMode() {
+            const editForm = document.getElementById('editProfileForm');
+            const user = JSON.parse(localStorage.getItem('user'));
+            
+            // Solo permitir edición si hay usuario logueado
+            if (!user) {
+                alert('Debes iniciar sesión para editar tu perfil.');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            if (editForm.style.display === 'none' || editForm.style.display === '') {
+                editForm.style.display = 'block';
+                // Llenar el formulario con los datos actuales del usuario
+                document.getElementById('profileName').value = user.name || '';
+                document.getElementById('profileEmail').value = user.email || '';
+                document.getElementById('profilePassword').value = ''; // Limpiar campo de contraseña
+            } else {
+                editForm.style.display = 'none';
+            }
+        }
+        
+        // Manejar el formulario de edición de perfil
+        document.getElementById('profileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const user = JSON.parse(localStorage.getItem('user'));
+            
+            if (user) {
+                user.name = document.getElementById('profileName').value;
+                user.email = document.getElementById('profileEmail').value;
+                const newPassword = document.getElementById('profilePassword').value;
+                
+                if (newPassword) {
+                    user.password = newPassword;
+                }
+                
+                localStorage.setItem('user', JSON.stringify(user));
+                
+                // Mostrar toast de confirmación
+                const toast = new bootstrap.Toast(document.getElementById('profileUpdateToast'));
+                toast.show();
+                
+                toggleEditMode();
+                loadUserProfile();
+            }
+        });
+        function showAddressForm(addressIndex = -1) {
+            const addressForm = document.getElementById('addressForm');
+            const formTitle = document.getElementById('addressFormTitle');
+            const addresses = getUserAddresses();
+            
+            if (addressIndex >= 0 && addresses[addressIndex]) {
+                // Modo edición
+                formTitle.textContent = 'Editar Dirección';
+                const address = addresses[addressIndex];
+                
+                document.getElementById('editAddressIndex').value = addressIndex;
+                document.getElementById('addressName').value = address.name || '';
+                document.getElementById('addressPhone').value = address.phone || '';
+                document.getElementById('addressStreet').value = address.street || '';
+                document.getElementById('addressCity').value = address.city || '';
+                document.getElementById('addressRegion').value = address.region || '';
+                document.getElementById('addressZip').value = address.zipCode || '';
+                document.getElementById('addressInstructions').value = address.instructions || '';
+                document.getElementById('addressDefault').checked = address.isDefault || false;
+            } else {
+                // Modo agregar nueva
+                formTitle.textContent = 'Agregar Nueva Dirección';
+                document.getElementById('editAddressIndex').value = '-1';
+                document.getElementById('addressFormElement').reset();
+            }
+            
+            addressForm.style.display = 'block';
+            addressForm.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Ocultar formulario de dirección
+        function hideAddressForm() {
+            document.getElementById('addressForm').style.display = 'none';
+            document.getElementById('addressFormElement').reset();
+        }
+
+        // Obtener direcciones del usuario
+        function getUserAddresses() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            return user && user.addresses ? user.addresses : [];
+        }
+
+        // Guardar direcciones del usuario
+        function saveUserAddresses(addresses) {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user) {
+                user.addresses = addresses;
+                localStorage.setItem('user', JSON.stringify(user));
+            }
+            return user;
+        }
+
+        // Cargar y mostrar direcciones
+        function loadAddresses() {
+            const addressesList = document.getElementById('addressesList');
+            const addresses = getUserAddresses();
+            
+            if (addresses.length === 0) {
+                addressesList.innerHTML = `
+                    <div class="text-center py-3">
+                        <i class="bi bi-house-door" style="font-size: 2rem; color: #6c757d;"></i>
+                        <p class="mt-2">No tienes direcciones guardadas.</p>
+                        <p class="text-muted small">Agrega tu primera dirección para recibir tus pedidos.</p>
                     </div>
                 `;
-            });
-            
-            orderHTML += `
-                        <div class="mt-3 pt-2 border-top">
-                            <div class="d-flex justify-content-between">
-                                <strong>Total:</strong>
-                                <strong>$${order.total.toLocaleString('es-CL')} CLP</strong>
+            } else {
+                addressesList.innerHTML = '';
+                addresses.forEach((address, index) => {
+                    const addressCard = `
+                        <div class="card mb-3 ${address.isDefault ? 'border-primary' : ''}">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div class="flex-grow-1">
+                                        <h6 class="card-title">
+                                            ${address.name}
+                                            ${address.isDefault ? '<span class="badge bg-primary ms-2">Principal</span>' : ''}
+                                        </h6>
+                                        <p class="card-text mb-1">
+                                            <i class="bi bi-geo-alt"></i> ${address.street}, ${address.city}
+                                        </p>
+                                        <p class="card-text mb-1">
+                                            <i class="bi bi-telephone"></i> ${address.phone}
+                                        </p>
+                                        <p class="card-text mb-1 small text-muted">
+                                            ${address.region} ${address.zipCode ? `- ${address.zipCode}` : ''}
+                                        </p>
+                                        ${address.instructions ? `
+                                            <p class="card-text small">
+                                                <strong>Instrucciones:</strong> ${address.instructions}
+                                            </p>
+                                        ` : ''}
+                                    </div>
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-outline-primary" onclick="showAddressForm(${index})" title="Editar">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <button class="btn btn-outline-danger" onclick="showDeleteAddressModal(${index})" title="Eliminar">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="mt-2">
-                            <span class="badge bg-success">${order.status}</span>
+                    `;
+                    addressesList.innerHTML += addressCard;
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const confirmDeleteBtn = document.getElementById('confirmDeleteAddressBtn');
+            if (confirmDeleteBtn) {
+                confirmDeleteBtn.addEventListener('click', confirmDeleteAddress);
+            }
+            
+            // Cerrar modal al hacer clic en cancelar (manejo automático de Bootstrap)
+            const deleteAddressModal = document.getElementById('deleteAddressModal');
+            if (deleteAddressModal) {
+                deleteAddressModal.addEventListener('hidden.bs.modal', function() {
+                    addressToDeleteIndex = null;
+                });
+            }
+        });
+
+        let addressToDeleteIndex = null;
+
+        // Eliminar dirección
+        function showDeleteAddressModal(index) {
+            const addresses = getUserAddresses();
+            const address = addresses[index];
+            
+            if (!address) return;
+            
+            // Almacenar el índice para usar en la confirmación
+            addressToDeleteIndex = index;
+            
+            // Mostrar información de la dirección a eliminar
+            const deleteAddressInfo = document.getElementById('deleteAddressInfo');
+            deleteAddressInfo.innerHTML = `
+                <strong>${address.name}</strong><br>
+                <small class="text-muted">
+                    <i class="bi bi-geo-alt"></i> ${address.street}, ${address.city}<br>
+                    ${address.isDefault ? '<span class="badge bg-danger">Dirección Principal</span>' : ''}
+                </small>
+            `;
+            
+            // Mostrar el modal
+            const deleteAddressModal = new bootstrap.Modal(document.getElementById('deleteAddressModal'));
+            deleteAddressModal.show();
+        }
+
+        // Función para eliminar dirección (confirmada desde el modal)
+        function confirmDeleteAddress() {
+            if (addressToDeleteIndex === null) return;
+            
+            const addresses = getUserAddresses();
+            const deletedAddress = addresses[addressToDeleteIndex];
+            
+            // Eliminar la dirección
+            addresses.splice(addressToDeleteIndex, 1);
+            saveUserAddresses(addresses);
+            loadAddresses();
+            
+            // Cerrar el modal
+            const deleteAddressModal = bootstrap.Modal.getInstance(document.getElementById('deleteAddressModal'));
+            deleteAddressModal.hide();
+            
+            // Mostrar toast de confirmación
+            showToast(`Dirección "${deletedAddress.name}" eliminada correctamente`, 'success');
+            
+            // Resetear la variable
+            addressToDeleteIndex = null;
+        }
+
+        // Función para cancelar la eliminación
+        function cancelDeleteAddress() {
+            addressToDeleteIndex = null;
+        }
+
+        // Establecer dirección como principal
+        function setDefaultAddress(index) {
+            const addresses = getUserAddresses();
+            addresses.forEach((addr, i) => {
+                addr.isDefault = (i === index);
+            });
+            saveUserAddresses(addresses);
+            loadAddresses();
+            
+            showToast('Dirección principal actualizada', 'success');
+        }
+
+        // Manejar envío del formulario de dirección
+        document.getElementById('addressFormElement').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+                alert('Debes iniciar sesión para guardar direcciones.');
+                return;
+            }
+            
+            const editIndex = parseInt(document.getElementById('editAddressIndex').value);
+            const addresses = getUserAddresses();
+            
+            const newAddress = {
+                name: document.getElementById('addressName').value,
+                phone: document.getElementById('addressPhone').value,
+                street: document.getElementById('addressStreet').value,
+                city: document.getElementById('addressCity').value,
+                region: document.getElementById('addressRegion').value,
+                zipCode: document.getElementById('addressZip').value,
+                instructions: document.getElementById('addressInstructions').value,
+                isDefault: document.getElementById('addressDefault').checked
+            };
+            
+            if (editIndex >= 0 && addresses[editIndex]) {
+                // Editar dirección existente
+                addresses[editIndex] = newAddress;
+            } else {
+                // Agregar nueva dirección
+                addresses.push(newAddress);
+            }
+            
+            // Si se marca como principal, quitar principal de las demás
+            if (newAddress.isDefault) {
+                addresses.forEach((addr, index) => {
+                    if (editIndex >= 0 && index !== editIndex) {
+                        addr.isDefault = false;
+                    } else if (editIndex === -1 && index !== addresses.length - 1) {
+                        addr.isDefault = false;
+                    }
+                });
+            }
+            
+            saveUserAddresses(addresses);
+            loadAddresses();
+            hideAddressForm();
+            
+            showToast(editIndex >= 0 ? 'Dirección actualizada' : 'Dirección agregada', 'success');
+        });
+
+        // Función para mostrar toasts
+        function showToast(message, type = 'success') {
+            // Crear toast dinámicamente
+            const toastContainer = document.querySelector('.toast-container');
+            if (!toastContainer) return;
+            
+            const toastId = 'toast-' + Date.now();
+            const toastHTML = `
+                <div id="${toastId}" class="toast align-items-center text-bg-${type} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <i class="bi bi-check-circle me-2"></i>${message}
                         </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                     </div>
                 </div>
             `;
             
-            orderHistory.innerHTML += orderHTML;
-        });
-    } else {
-        orderHistory.innerHTML = '<p class="text-center">No hay pedidos recientes.</p>';
-    }
-}
-    
-    // Funciones de logout
-    function logout() {
-        const logoutModal = new bootstrap.Modal(document.getElementById('logoutModal'));
-        logoutModal.show();
-    }
-    
-    function confirmLogout() {
-        localStorage.removeItem('user');
-        const logoutModal = bootstrap.Modal.getInstance(document.getElementById('logoutModal'));
-        logoutModal.hide();
-        
-        setTimeout(() => {
-            const logoutSuccessModal = new bootstrap.Modal(document.getElementById('logoutSuccessModal'));
-            logoutSuccessModal.show();
-        }, 300);
-    }
-    
-    function redirectToHome() {
-        window.location.href = 'index.html';
-    }
-    
-    // Función para editar perfil
-    function toggleEditMode() {
-    const editForm = document.getElementById('editProfileForm');
-    const user = JSON.parse(localStorage.getItem('user'));
-    
-    // Solo permitir edición si hay usuario logueado
-    if (!user) {
-        alert('Debes iniciar sesión para editar tu perfil.');
-        window.location.href = 'login.html';
-        return;
-    }
-    
-    if (editForm.style.display === 'none' || editForm.style.display === '') {
-        editForm.style.display = 'block';
-        // Llenar el formulario con los datos actuales del usuario
-        document.getElementById('profileName').value = user.name || '';
-        document.getElementById('profileEmail').value = user.email || '';
-        document.getElementById('profilePassword').value = ''; // Limpiar campo de contraseña
-    } else {
-        editForm.style.display = 'none';
-    }
-}
-    
-    // Manejar el formulario de edición de perfil
-    document.getElementById('profileForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const user = JSON.parse(localStorage.getItem('user'));
-        
-        if (user) {
-            user.name = document.getElementById('profileName').value;
-            user.email = document.getElementById('profileEmail').value;
-            const newPassword = document.getElementById('profilePassword').value;
-            
-            if (newPassword) {
-                user.password = newPassword;
-            }
-            
-            localStorage.setItem('user', JSON.stringify(user));
-            
-            // Mostrar toast de confirmación
-            const toast = new bootstrap.Toast(document.getElementById('profileUpdateToast'));
+            toastContainer.innerHTML += toastHTML;
+            const toastElement = document.getElementById(toastId);
+            const toast = new bootstrap.Toast(toastElement);
             toast.show();
             
-            toggleEditMode();
-            loadUserProfile();
+            // Remover el toast del DOM después de que se oculte
+            toastElement.addEventListener('hidden.bs.toast', () => {
+                toastElement.remove();
+            });
         }
-    });
-    
-    // Cargar perfil cuando la página esté lista
-    document.addEventListener('DOMContentLoaded', loadUserProfile);
-</script>
+        
+        // Cargar perfil cuando la página esté lista
+        document.addEventListener('DOMContentLoaded', loadUserProfile);
+
+    </script>
+    <div class="modal fade" id="deleteAddressModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmar Eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <div class="mb-3">
+                    <i class="bi bi-exclamation-triangle" style="font-size: 3rem; color: #dc3545;"></i>
+                </div>
+                <h4>¿Eliminar dirección?</h4>
+                <p>Esta acción no se puede deshacer. La dirección será eliminada permanentemente.</p>
+                <div id="deleteAddressInfo" class="p-3 bg-light rounded mt-3">
+                    <!-- Aquí se mostrará la información de la dirección a eliminar -->
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteAddressBtn">Sí, Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;">
+        <!-- Los toasts se generan dinámicamente -->
+    </div>
 </body>
 </html>
