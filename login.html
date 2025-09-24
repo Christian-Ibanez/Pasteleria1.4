@@ -69,43 +69,60 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.getElementById('loginForm').addEventListener('submit', (e) => {
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             
+            console.log('Intentando login con:', { email, password }); // Para debug
+            
             // Credenciales de administrador
             if (email === 'admin@admin.cl' && password === 'admin') {
+                console.log('Login admin exitoso');
                 window.location.href = 'admin.html';
                 return; 
             }
 
-            // Verificar credenciales de usuario normal
+            // Obtener usuario de localStorage
             const storedUser = JSON.parse(localStorage.getItem('user'));
+            console.log('Usuario almacenado:', storedUser); // Para debug
             
-            if (storedUser && storedUser.email === email) {
-                // Manejar usuarios antiguos sin contraseña
-                if (!storedUser.password) {
-                    // Si es usuario antiguo, establecer contraseña por defecto
-                    storedUser.password = '123456';
-                    localStorage.setItem('user', JSON.stringify(storedUser));
-                }
-                
-                // Verificar contraseña
-                if (storedUser.password === password) {
-                    window.location.href = 'perfil.html';
-                } else {
-                    showLoginError();
-                }
-            } else {
+            // Verificar si existe el usuario
+            if (!storedUser) {
+                console.log('No se encontró usuario en localStorage');
                 showLoginError();
+                return;
             }
+            
+            // Verificar email
+            if (storedUser.email !== email) {
+                console.log('Email no coincide');
+                showLoginError();
+                return;
+            }
+            
+            // Verificar contraseña
+            if (storedUser.password !== password) {
+                console.log('Contraseña incorrecta');
+                showLoginError();
+                return;
+            }
+            
+            // Login exitoso
+            console.log('Login exitoso, redirigiendo a perfil');
+            window.location.href = 'perfil.html';
         });
 
         function showLoginError() {
             const loginErrorModal = new bootstrap.Modal(document.getElementById('loginErrorModal'));
             loginErrorModal.show();
         }
+        
+        // Debug: Mostrar lo que hay en localStorage al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            console.log('Usuario en localStorage al cargar login:', user);
+        });
     </script>
 </body>
 </html>

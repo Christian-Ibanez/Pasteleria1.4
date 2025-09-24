@@ -147,15 +147,18 @@
     <script>
     // Función para cargar información del usuario
     function loadUserProfile() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    const userInfo = document.getElementById('userInfo');
-    const userDiscounts = document.getElementById('userDiscounts');
-    const editProfileBtn = document.getElementById('editProfileBtn');
-    const editProfileForm = document.getElementById('editProfileForm');
-    const logoutBtn = document.querySelector('button[onclick="logout()"]');
+        const user = JSON.parse(localStorage.getItem('user'));
+        console.log('Usuario en perfil:', user); // Para debug
+        
+        const userInfo = document.getElementById('userInfo');
+        const userDiscounts = document.getElementById('userDiscounts');
+        const editProfileBtn = document.getElementById('editProfileBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const editProfileForm = document.getElementById('editProfileForm');
     
     if (user) {
         // Mostrar información del usuario
+        console.log('Usuario logueado:');
         userInfo.innerHTML = `
             <p><strong>Nombre:</strong> ${user.name}</p>
             <p><strong>Email:</strong> ${user.email}</p>
@@ -185,6 +188,7 @@
         loadOrderHistory();
     } else {
         // No hay usuario logueado
+        console.log('No hay usuario logueado')
         userInfo.innerHTML = '<p>No hay información de usuario. <a href="registro.html">Regístrate aquí</a> o <a href="login.html">inicia sesión</a></p>';
         userDiscounts.innerHTML = '<p>No tienes descuentos disponibles.</p>';
         
